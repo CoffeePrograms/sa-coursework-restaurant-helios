@@ -1,0 +1,40 @@
+@startuml seq_booking
+skinparam dpi 150
+skinparam defaultFontName "DejaVu Sans"
+skinparam maxMessageSize 170
+skinparam shadowing false
+title Бронирование обеда · Helios
+autonumber
+actor "Сотрудник" as emp
+participant "Веб-\nприложение" as web
+participant "BFF" as bff
+participant "Menu" as menu
+participant "Hall" as hall
+participant "Lunch" as lunch
+
+emp -> web : Открывает бронирование
+web -> bff : GET /api/MenuSchedule на сегодня
+bff -> menu : Запрашивает расписание (gRPC)
+menu --> bff : Расписание с меню
+bff --> web : Меню на сегодня
+web -> bff : GET /api/dish
+bff -> menu : Запрашивает блюда (gRPC)
+menu --> bff : Блюда
+bff --> web : Блюда
+web -> web : Группирует блюда меню по типам
+emp -> web : Выбирает блюда и время
+web -> bff : GET /api/Layout
+bff -> hall : Запрашивает схему (gRPC)
+hall --> bff : Столы и места
+bff --> web : Схема зала
+web -> bff : GET /api/Reservation на дату
+bff -> lunch : Запрашивает обеды (gRPC)
+lunch --> bff : Обеды на дату
+bff --> web : Занятые места
+emp -> web : Выбирает место, подтверждает
+web -> bff : POST /api/Reservation
+bff -> lunch : Создает обед (gRPC)
+lunch --> bff : Обед сохранен
+bff --> web : 200 OK
+bff -->> web : ReservationCreated (SignalR, всем клиентам)
+@enduml

@@ -1,0 +1,49 @@
+@startuml c4_L2
+!include <C4/C4_Container>
+skinparam dpi 150
+skinparam defaultFontName "DejaVu Sans"
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+AddRelTag("async", $textColor="#e65100", $lineColor="#ef6c00", $legendText="асинхронно, через брокер")
+
+title C4 · Уровень 2 · Контейнеры · Helios
+
+Person(emp, "Сотрудник", "Работник компании")
+Person(mgr, "Менеджер", "Работник компании, который организует обеды")
+Person(adm, "Администратор", "Работник компании, который сопровождает систему")
+
+System_Boundary(sys, "Helios") {
+  Container(web, "Веб-приложение", "React, Nginx", "Экраны сотрудника, менеджера и администратора")
+  Container(bff, "BFF", "ASP.NET Core", "Единая точка входа, данные под экраны, отчеты PDF и Excel")
+  Container(auth, "Authorization", "ASP.NET Core", "Пользователи и роли")
+  Container(menu, "Menu", "ASP.NET Core", "Блюда, меню, расписание")
+  Container(lunch, "Lunch", "ASP.NET Core", "Обеды сотрудников")
+  Container(hall, "Hall", "ASP.NET Core", "Схема зала")
+  ContainerQueue(mq, "Брокер сообщений", "RabbitMQ", "Очередь логов")
+  ContainerDb(authdb, "БД Authorization", "PostgreSQL")
+  ContainerDb(menudb, "БД Menu", "MongoDB")
+  ContainerDb(lunchdb, "БД Lunch", "PostgreSQL")
+  ContainerDb(halldb, "БД Hall", "MongoDB")
+}
+
+Rel_D(emp, web, "Бронирует обед", "HTTPS")
+Rel_D(mgr, web, "Ведет меню, зал", "HTTPS")
+Rel_D(adm, web, "Назначает роли", "HTTPS")
+Rel_D(web, bff, "1. Вызывает API", "HTTPS")
+Rel_U(bff, web, "2. Сообщает о бронях", "WebSocket")
+Rel_D(bff, auth, "3. Проверяет вход", "HTTP")
+Rel_D(bff, menu, "4. Ведет меню", "gRPC")
+Rel_D(bff, lunch, "5. Сохраняет обеды", "gRPC")
+Rel_D(bff, hall, "6. Ведет схему зала", "gRPC")
+Rel_D(bff, mq, "7. Пишет логи", "AMQP", $tags="async")
+Rel_D(auth, authdb, "Хранит данные", "SQL")
+Rel_D(menu, menudb, "Хранит данные", "MongoDB Wire")
+Rel_D(lunch, lunchdb, "Хранит данные", "SQL")
+Rel_D(hall, halldb, "Хранит данные", "MongoDB Wire")
+
+Lay_R(auth, menu)
+Lay_R(menu, lunch)
+Lay_R(lunch, hall)
+Lay_R(hall, mq)
+
+@enduml

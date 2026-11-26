@@ -1,0 +1,31 @@
+@startuml c4_L2_service
+!include <C4/C4_Container>
+skinparam dpi 150
+skinparam defaultFontName "DejaVu Sans"
+LAYOUT_TOP_DOWN()
+HIDE_STEREOTYPE()
+AddRelTag("async", $textColor="#e65100", $lineColor="#ef6c00", $legendText="асинхронно, через брокер")
+
+title C4 · Уровень 2 · Логи и мониторинг · Helios
+
+Person(adm, "Администратор", "Работник компании, который сопровождает систему")
+
+System_Boundary(sys, "Helios") {
+  Container(bff, "BFF", "ASP.NET Core, Serilog", "Пишет структурные логи запросов")
+  ContainerQueue(mq, "Брокер сообщений", "RabbitMQ", "Очередь логов")
+  Container(admin, "Administration", "ASP.NET Core, Dapper", "Читает логи из очереди и записывает их")
+  ContainerDb(logdb, "БД логов", "ClickHouse", "Логи запросов")
+  Container(prom, "Prometheus", "Prometheus", "Собирает метрики ClickHouse")
+  Container(graf, "Grafana", "Grafana", "Дашборды «Логи» и «ClickHouse»")
+}
+
+Rel_R(bff, mq, "Публикует логи", "AMQP", $tags="async")
+Rel_R(mq, admin, "Передает логи", "AMQP", $tags="async")
+Rel_D(admin, logdb, "Записывает логи", "HTTP")
+Rel_U(prom, logdb, "Собирает метрики", "HTTP")
+Rel_U(graf, logdb, "Читает логи")
+Rel_R(graf, prom, "Читает метрики", "HTTP")
+Rel_D(adm, graf, "Смотрит дашборды", "HTTP")
+
+Lay_D(admin, logdb)
+@enduml

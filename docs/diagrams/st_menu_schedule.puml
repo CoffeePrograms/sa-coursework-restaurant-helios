@@ -1,0 +1,28 @@
+@startuml st_menu_schedule
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam dpi 150
+hide empty description
+skinparam state {
+  BackgroundColor #FEFECE
+  BorderColor #555555
+  ArrowColor #333333
+}
+
+state "Запланировано\n(дата позже сегодняшней)" as Plan
+state "Действует\n(дата — сегодня)" as Now
+state "Прошло\n(дата раньше сегодняшней)" as Past
+state "Удалено\n(IsDeleted = true)" as Del
+
+[*] --> Plan : менеджер назначил меню на дату\n(POST /api/MenuSchedule)
+[*] --> Now : менеджер назначил меню\nна сегодня
+Plan --> Now : наступила дата
+Now --> Past : дата прошла
+Plan --> Del : запись удалена\n(DELETE /api/MenuSchedule)
+Now --> Del : запись удалена
+Past --> Del : запись удалена
+Past --> [*]
+Del --> [*]
+note right of Now : Сотрудник видит в бронировании\nтолько меню на сегодня.\nСостояния по дате вычисляются,\nв базе хранятся дата и IsDeleted.
+@enduml

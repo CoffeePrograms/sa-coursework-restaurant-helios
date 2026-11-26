@@ -1,0 +1,41 @@
+@startuml domain_model
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 14
+skinparam shadowing false
+skinparam dpi 150
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam ArrowColor black
+skinparam nodesep 60
+skinparam ranksep 55
+hide circle
+hide empty members
+hide methods
+
+class "Менеджер" as Mgr
+class "Сотрудник" as Emp
+class "Список всех блюд" as All
+class "Блюдо" as Dish
+class "Меню на день" as Menu
+class "Расписание меню" as Sched {
+  дата меню
+}
+class "Обед" as Lunch {
+  время обеда: 12:00 или 13:00
+}
+class "Схема зала" as Hall
+class "Место за столом" as Seat
+
+Mgr --> All : ведет
+Mgr --> Menu : составляет
+Mgr --> Sched : назначает
+Mgr --> Hall : ведет
+All --> Dish : содержит
+Menu --> Dish : включает
+Sched --> Menu : привязывает к дате
+Emp --> Lunch : бронирует
+Lunch --> Dish : содержит
+Lunch --> Menu : основан на
+Lunch --> Seat : занимает
+Hall --> Seat : содержит
+@enduml

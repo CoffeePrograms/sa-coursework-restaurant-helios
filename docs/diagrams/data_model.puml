@@ -1,0 +1,111 @@
+@startuml data_model
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 13
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam dpi 150
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 45
+skinparam ranksep 45
+hide methods
+hide empty members
+hide circle
+
+package "Authorization · PostgreSQL" as PA {
+  class "Пользователь" as User {
+    {field} ID: int «PK»
+    {field} ФИО: string(100)
+    {field} Логин: string(50)
+    {field} Хэш пароля: string(255)
+  }
+  class "Роль пользователя" as UR {
+    {field} Пользователь: int «FK»
+    {field} Роль: int «FK»
+  }
+  class "Роль" as Role {
+    {field} ID: int «PK»
+    {field} Название: string(50)
+  }
+}
+
+package "Menu · MongoDB" as PM {
+  class "Блюдо" as Dish {
+    {field} ID: string «PK»
+    {field} Название: string
+    {field} Описание: string
+    {field} Тип блюда: int (DishType)
+    {field} Изображение: string
+    {field} Признак удаления: bool
+  }
+  class "Меню" as Menu {
+    {field} ID: string «PK»
+    {field} Название: string
+    {field} Блюда: string[]
+    {field} Признак удаления: bool
+  }
+  class "Расписание меню" as Sched {
+    {field} ID: string «PK»
+    {field} Меню: string «FK»
+    {field} Дата/время: datetime
+    {field} Признак удаления: bool
+  }
+}
+
+package "Lunch · PostgreSQL" as PL {
+  class "Обед" as Res {
+    {field} ID: long «PK»
+    {field} Дата/время: datetime
+    {field} Сотрудник (ФИО): string
+    {field} Схема зала: string
+    {field} Стол (название): string
+    {field} Номер места: int
+    {field} Признак удаления: bool
+  }
+  class "Блюдо обеда" as DR {
+    {field} ID: long «PK»
+    {field} Обед: long «FK»
+    {field} Блюдо: string
+  }
+}
+
+package "Hall · MongoDB" as PH {
+  class "Схема зала" as Lay {
+    {field} ID: string «PK»
+    {field} Ширина: double
+    {field} Высота: double
+    {field} Ресторан: string (необяз.)
+    {field} Подложка: string (необяз.)
+    {field} Признак удаления: bool
+  }
+  class "Стол" as Tbl {
+    {field} ID: string «PK» (целевой)
+    {field} Название: string
+    {field} Описание: string
+    {field} Координаты углов: точка[4]
+  }
+  class "Место" as Seat {
+    {field} ID: string «PK» (целевой)
+    {field} Номер: int
+    {field} Описание: string
+    {field} Центр: точка
+    {field} Радиус: double
+  }
+}
+
+User "1" -- "0..*" UR
+Role "1" -- "0..*" UR
+Menu "0..*" o-- "0..*" Dish
+Sched "0..*" --> "1" Menu
+Res "1" *-- "1..*" DR
+DR "0..*" ..> "1" Dish
+Res "0..*" ..> "1" Lay
+Res ..> "1" Seat : название стола и номер места
+Lay "1" *-- "0..*" Tbl
+Tbl "1" *-- "0..*" Seat
+
+legend bottom right
+Пунктир — ссылка на данные другого сервиса, без внешнего ключа в БД
+(целевой) — атрибута в коде нет, см. раздел 7.2
+endlegend
+@enduml

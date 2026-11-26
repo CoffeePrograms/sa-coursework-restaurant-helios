@@ -1,0 +1,67 @@
+@startuml physical
+skinparam dpi 150
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam nodesep 40
+skinparam ranksep 55
+
+title Физическая схема взаимодействия · Helios
+
+node "Nginx :443" as nginx {
+  component "Веб-приложение\nReact" as react
+}
+node "BFF :5555" as bff {
+  component "REST-контроллеры" as rest
+  component "Сервисы BFF\n(данные под экраны, отчеты)" as logic
+  component "gRPC-клиенты" as grpcc
+  component "HTTP-клиент\nAuthorization" as authc
+  component "SignalR\n/hubs/reservations" as hub
+  component "Serilog" as serilog
+}
+node "Menu" as menu {
+  component "gRPC-сервер :5064" as gm
+}
+node "Lunch" as lunch {
+  component "gRPC-сервер :5065" as gl
+  component "EF Core" as efl
+}
+node "Hall" as hall {
+  component "gRPC-сервер :5066" as gh
+}
+node "Authorization" as auth {
+  component "REST API :5067" as ra
+  component "EF Core" as efa
+}
+queue "RabbitMQ :5672" as mq
+node "Administration" as adm {
+  component "Потребитель логов" as cons
+  component "Dapper" as dap
+}
+database "MongoDB" as mdb1
+database "PostgreSQL" as pdb1
+database "MongoDB" as mdb2
+database "PostgreSQL" as pdb2
+database "ClickHouse" as ch
+
+react --> rest : HTTPS /api
+hub --> react : WebSocket
+rest --> logic
+logic --> grpcc
+rest --> authc
+grpcc --> gm : gRPC
+grpcc --> gl : gRPC
+grpcc --> gh : gRPC
+authc --> ra : HTTP
+gm --> mdb1
+gl --> efl
+efl --> pdb1
+gh --> mdb2
+ra --> efa
+efa --> pdb2
+serilog --> mq : AMQP
+mq --> cons : AMQP
+cons --> dap
+dap --> ch : HTTP
+@enduml
