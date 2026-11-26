@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>Helios — меню на день</title>
+<style>
+ /* Макет экрана MenuDisplay.tsx (MUI): заголовок меню, 4 типа блюд по 2 карточки */
+ body{margin:0;background:#fff;font-family:Roboto,"DejaVu Sans",Arial,sans-serif;color:rgba(0,0,0,.87)}
+ .wrap{width:1180px;margin:0 auto;padding:20px 24px 28px}
+ h4{font-weight:400;font-size:2.125rem;line-height:1.235;text-align:center;margin:0 0 20px}
+ .grid{display:grid;grid-template-columns:1fr 1fr;column-gap:44px;row-gap:26px}
+ h5{font-size:1.5rem;font-weight:500;margin:0 0 12px;padding-bottom:4px;border-bottom:2px solid #333}
+ .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+ .card{border-radius:4px;box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 1px 3px 0 rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;background:#fff;height:350px;box-sizing:border-box}
+ .card.sel{box-shadow:0 0 0 2px #1976d2,0 3px 6px rgba(0,0,0,.16)}
+ .media{position:relative;height:140px;flex-shrink:0}
+ .media img{width:100%;height:140px;object-fit:cover;display:block}
+ .radio{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.75);display:flex;align-items:center;justify-content:center}
+ .radio i{width:18px;height:18px;border:2px solid rgba(0,0,0,.6);border-radius:50%;box-sizing:border-box;position:relative}
+ .sel .radio i{border-color:#1976d2}
+ .sel .radio i:after{content:"";position:absolute;left:3px;top:3px;width:8px;height:8px;border-radius:50%;background:#1976d2}
+ .content{padding:14px 16px 16px}
+ h6{font-size:1.2rem;font-weight:500;line-height:1.5;margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ p{font-size:0.92rem;line-height:1.43;margin:0}
+</style></head><body><div class="wrap">
+<h4>Меню на среду, 3 декабря</h4>
+<div class="grid" id="grid"></div>
+</div>
+<script>
+const D=[
+ ["Супы",[
+  ["borsch_card","Борщ","Свекла, капуста белокочанная, картофель, морковь, лук репчатый, говядина, томатная паста, сметана.","3,8","2,9","5,0","62",true],
+  ["noodle_card","Куриная лапша","Бульон куриный, куриное филе, лапша яичная, морковь, лук репчатый, зелень.","3,9","1,6","5,2","51",false]]],
+ ["Горячее",[
+  ["cutlet_card","Куриная котлета с пюре","Котлета из куриного фарша в панировке из сухарей, картофельное пюре на молоке со сливочным маслом.","9,2","6,8","11,5","144",true],
+  ["pasta_card","Паста болоньезе","Спагетти, говяжий фарш, томаты в собственном соку, лук репчатый, морковь, сыр пармезан.","7,6","5,9","18,4","157",false]]],
+ ["Салаты",[
+  ["olivier_card","Оливье с курицей","Картофель, куриное филе, яйцо, огурцы соленые, горошек зеленый, морковь, майонез.","6,2","12,4","7,1","165",false],
+  ["vegsalad_card","Салат из свежих овощей","Капуста белокочанная, морковь, огурец, перец сладкий, масло растительное.","1,3","3,1","5,4","55",true]]],
+ ["Напитки",[
+  ["tea_card","Чай черный","Чай черный, вода, сахар, лимон.","0,1","0,0","7,0","28",false],
+  ["mors_card","Морс клюквенный","Клюква, вода, сахар.","0,1","0,0","10,7","43",true]]]
+];
+const g=document.getElementById('grid');
+for(const [t,ds] of D){
+ let h=`<div><h5>${t}</h5><div class="cards">`;
+ for(const [img,n,c,b,f,u,k,s] of ds){
+  h+=`<div class="card${s?' sel':''}"><div class="media"><img src="img/${img}.jpg" alt="${n}"><div class="radio"><i></i></div></div>
+  <div class="content"><h6>${n}</h6><p>Состав: ${c} Пищевая ценность на 100&nbsp;г: белки ${b}&nbsp;г, жиры ${f}&nbsp;г, углеводы ${u}&nbsp;г, ${k}&nbsp;ккал.</p></div></div>`;
+ }
+ g.insertAdjacentHTML('beforeend',h+'</div></div>');
+}
+
+</script></body></html>

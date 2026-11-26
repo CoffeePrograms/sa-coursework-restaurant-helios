@@ -1,0 +1,111 @@
+site_name: "Таверна Helios"
+site_description: "Портфолио системного аналитика: требования и архитектура сервиса бронирования обедов. Липова Эльвира Евгеньевна"
+site_url: https://coffeeprograms.github.io/sa-coursework-restaurant-helios/
+repo_url: https://github.com/CoffeePrograms/sa-coursework-restaurant-helios
+repo_name: CoffeePrograms/sa-coursework-restaurant-helios
+edit_uri: edit/main/docs/
+docs_dir: docs
+use_directory_urls: true
+theme:
+  name: material
+  custom_dir: overrides
+  language: ru
+  favicon: assets/favicon.png
+  logo: assets/logo.png
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.path
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - navigation.footer
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Включить темную тему
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Включить светлую тему
+nav:
+  - Главная: index.md
+  - "Глоссарий": glossariy.md
+  - "1. Бизнес-требования":
+      - "1.1. Объект автоматизации": 01-biznes-trebovaniya/1.1-obekt-avtomatizacii.md
+      - "1.2. Цели проекта": 01-biznes-trebovaniya/1.2-celi-proekta.md
+      - "1.3. Требования бизнеса": 01-biznes-trebovaniya/1.3-trebovaniya-biznesa.md
+      - "1.4. Метрики успеха": 01-biznes-trebovaniya/1.4-metriki-uspeha.md
+      - "1.5. Бизнес-процессы": 01-biznes-trebovaniya/1.5-biznes-processy.md
+      - "1.6. Границы": 01-biznes-trebovaniya/1.6-granicy.md
+      - "1.7. Команда и моя роль": 01-biznes-trebovaniya/1.7-komanda-i-rol.md
+  - "2. Требования к приложению":
+      - "2.1. Роли и участники взаимодействия": 02-trebovaniya/2.1-roli-i-uchastniki-vzaimodeystviya.md
+      - "2.2. Ограничения и правила": 02-trebovaniya/2.2-ogranicheniya-i-pravila.md
+      - "2.3. Нефункциональные требования": 02-trebovaniya/2.3-nefunkcionalnye-trebovaniya.md
+      - "2.4. Пользовательские истории": 02-trebovaniya/2.4-polzovatelskie-istorii.md
+  - "3. Информационная модель":
+      - "3.1. Доменная модель": 03-informacionnaya-model/3.1-domennaya-model.md
+      - "3.2. Логическая модель данных": 03-informacionnaya-model/3.2-logicheskaya-model-dannyh.md
+      - "3.3. Описание сущностей": 03-informacionnaya-model/3.3-opisanie-suschnostey.md
+      - "3.4. Связи и кратность": 03-informacionnaya-model/3.4-svyazi-i-kratnost.md
+      - "3.5. Перечисления и статусные модели": 03-informacionnaya-model/3.5-perechisleniya-i-statusnye-modeli.md
+  - "4. Архитектура":
+      - "4.1. Обоснование архитектурного стиля": 04-arhitektura/4.1-obosnovanie-arhitekturnogo-stilya.md
+      - "4.2. Диаграммы C4": 04-arhitektura/4.2-diagrammy-c4.md
+      - "4.3. Перечень интеграций": 04-arhitektura/4.3-perechen-integraciy.md
+      - "4.4. Схема и описание интеграции": 04-arhitektura/4.4-shema-i-opisanie-integracii.md
+  - "5. API":
+      - "5.1. Ресурсы и эндпоинты": 05-api/5.1-resursy-i-endpointy.md
+      - "5.2. Контракт создания брони": 05-api/5.2-kontrakt-post-reservation.md
+  - "6. Критерии приемки":
+      - 06-kriterii/index.md
+      - "6.1. Меню": 06-kriterii/6.1-menyu.md
+      - "6.2. Бронирование обеда": 06-kriterii/6.2-bronirovanie-obeda.md
+      - "6.3. Отчеты для ресторана": 06-kriterii/6.3-otchety-dlya-restorana.md
+      - "6.4. Пользователи и роли": 06-kriterii/6.4-polzovateli-i-roli.md
+      - "6.5. Мониторинг": 06-kriterii/6.5-monitoring.md
+      - "6.6. Схема зала": 06-kriterii/6.6-shema-zala.md
+      - "6.7. Истории бэклога": 06-kriterii/6.7-istorii-bekloga.md
+  - "7. Результат":
+      - "7.1. Что реализовано": 07-rezultat/7.1-chto-realizovano.md
+      - "7.2. Найдено при ревизии": 07-rezultat/7.2-naydeno-pri-revizii.md
+  - "8. Спринты": 08-sprinty.md
+  - "Приложение А. Исходники схем": prilozhenie-a.md
+plugins:
+  - search:
+      lang: ru
+hooks:
+  - hooks/nav_icons.py
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - tables
+  - sane_lists
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+extra:
+  generator: false
+extra_css:
+  - stylesheets/extra.css?v=2
+validation:
+  absolute_links: warn
+  unrecognized_links: warn
+  omitted_files: warn
+  anchors: warn

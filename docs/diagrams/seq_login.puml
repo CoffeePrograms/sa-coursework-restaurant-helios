@@ -1,0 +1,35 @@
+@startuml seq_login
+skinparam dpi 150
+skinparam defaultFontName "DejaVu Sans"
+skinparam maxMessageSize 170
+skinparam shadowing false
+title Вход и проверка прав · Helios
+autonumber
+actor "Пользователь" as usr
+participant "Веб-\nприложение" as web
+participant "BFF" as bff
+participant "Authorization" as auth
+database "PostgreSQL" as db
+
+usr -> web : Вводит логин и пароль
+web -> bff : POST /api/auth/login
+bff -> auth : POST /api/auth/login (HTTP)
+auth -> db : Ищет пользователя и роли
+db --> auth : Пользователь, хэш пароля, роли
+auth -> auth : Проверяет пароль
+auth --> bff : Пользователь и роли
+bff -> bff : Создает cookie с ФИО, логином и ролями
+bff --> web : 200 OK, Set-Cookie
+web -> bff : GET /api/auth/userInfo (cookie)
+bff --> web : ФИО, логин, роли
+web -> web : Показывает функции по ролям
+usr -> web : Открывает управление пользователями
+web -> bff : GET /api/users (cookie)
+alt роль «Администратор»
+  bff -> auth : GET /api/user (HTTP)
+  auth --> bff : Пользователи
+  bff --> web : Пользователи
+else другая роль
+  bff --> web : 403 Forbidden
+end
+@enduml

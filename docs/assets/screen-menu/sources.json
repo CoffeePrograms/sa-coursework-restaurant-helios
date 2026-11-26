@@ -1,0 +1,58 @@
+[
+ {
+  "key": "borsch_card",
+  "file": "img/borsch_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (тарелка борща со сметаной)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "noodle_card",
+  "file": "img/noodle_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (тарелка куриной лапши)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "cutlet_card",
+  "file": "img/cutlet_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (куриная котлета в панировке с пюре)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "pasta_card",
+  "file": "img/pasta_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (паста болоньезе)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "olivier_card",
+  "file": "img/olivier_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (салат оливье)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "vegsalad_card",
+  "file": "img/vegsalad_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (салат из свежих овощей)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "tea_card",
+  "file": "img/tea_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (стеклянная чашка чая с лимоном)",
+  "license": "—",
+  "author": "—"
+ },
+ {
+  "key": "mors_card",
+  "file": "img/mors_gen.jpg",
+  "source": "сгенерировано по запросу Эльвиры Липовой (стакан клюквенного морса)",
+  "license": "—",
+  "author": "—"
+ }
+]
